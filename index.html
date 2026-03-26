@@ -238,5 +238,87 @@
         </div>
     </footer>
 
+
+    <!-- Contact Modal Overlay -->
+    <div id="contactModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center">
+        <!-- Backdrop -->
+        <div id="modalBackdrop" class="absolute inset-0 bg-slate-900/90 backdrop-blur-md transition-opacity duration-300 opacity-0 cursor-pointer"></div>
+        
+        <!-- Modal Card -->
+        <div id="modalContent" class="relative glass-card p-8 sm:p-10 rounded-3xl max-w-sm w-full mx-4 transform scale-95 opacity-0 transition-all duration-300 shadow-2xl shadow-blue-500/20 border border-blue-500/30">
+            <!-- Close Button -->
+            <button id="closeModal" class="absolute top-5 right-5 text-slate-400 hover:text-white transition-colors bg-slate-800/50 hover:bg-slate-700 p-2 rounded-full">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            
+            <div class="text-center relative z-10">
+                <!-- Icon -->
+                <div class="w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-blue-500/40 border border-white/10">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                </div>
+                
+                <h3 class="text-2xl font-bold text-white mb-2 tracking-tight">联系专家团队</h3>
+                <p class="text-slate-400 text-sm mb-8 leading-relaxed">
+                    扫描下方飞书二维码<br>与我们的云架构师和 AI 专家面对面沟通
+                </p>
+                
+                <!-- QR Code Container -->
+                <div class="bg-white p-4 rounded-2xl inline-block shadow-inner mx-auto ring-4 ring-white/10">
+                    <img src="assets/contact-qr.png" alt="Zeliora 飞书二维码" class="w-48 h-48 object-cover rounded-xl border border-slate-100">
+                </div>
+                
+                <div class="mt-8 flex items-center justify-center gap-2 text-xs text-slate-400 font-medium">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    工作日极速响应您的技术需求
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('contactModal');
+            const backdrop = document.getElementById('modalBackdrop');
+            const content = document.getElementById('modalContent');
+            const closeBtn = document.getElementById('closeModal');
+            // Select all links pointing to #contact
+            const contactLinks = document.querySelectorAll('a[href="#contact"]');
+
+            function openModal(e) {
+                e.preventDefault();
+                modal.classList.remove('hidden');
+                
+                // Force a browser reflow to ensure the transition applies
+                void modal.offsetWidth;
+                
+                backdrop.classList.remove('opacity-0');
+                backdrop.classList.add('opacity-100');
+                
+                content.classList.remove('scale-95', 'opacity-0');
+                content.classList.add('scale-100', 'opacity-100');
+            }
+
+            function closeModal() {
+                backdrop.classList.remove('opacity-100');
+                backdrop.classList.add('opacity-0');
+                
+                content.classList.remove('scale-100', 'opacity-100');
+                content.classList.add('scale-95', 'opacity-0');
+                
+                // Wait for transition to finish before hiding
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 300);
+            }
+
+            contactLinks.forEach(link => {
+                link.addEventListener('click', openModal);
+            });
+
+            closeBtn.addEventListener('click', closeModal);
+            backdrop.addEventListener('click', closeModal);
+        });
+    </script>
 </body>
 </html>
