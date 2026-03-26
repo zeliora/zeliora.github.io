@@ -1,18 +1,242 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  <title>Zeliora 官方网站</title>
-  <style>
-    body { font-family: 'Helvetica Neue', Arial, sans-serif; text-align: center; margin-top: 15%; background: #f4f4f9; color: #333; }
-    h1 { color: #2c3e50; font-size: 2.5em; }
-    p { font-size: 1.2em; color: #666; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zeliora | 云架构与 AI Agent 专家</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .hero-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.1) 0%, transparent 50%);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .text-gradient {
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
 </head>
-<body>
-  <h1>欢迎来到 Zeliora (智理光纪)</h1>
-  <p>官方企业网站建设中...</p>
-  <hr width="300px">
-  <p><em>Zeliora Enterprise</em></p>
+<body class="bg-slate-900 text-slate-50 antialiased selection:bg-blue-500 selection:text-white">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 glass-card border-b-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-white">Z</div>
+                    <span class="font-bold text-xl tracking-tight">Zeliora</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#services" class="hover:text-blue-400 transition-colors px-3 py-2 rounded-md text-sm font-medium">核心服务</a>
+                        <a href="#solutions" class="hover:text-blue-400 transition-colors px-3 py-2 rounded-md text-sm font-medium">解决方案</a>
+                        <a href="#about" class="hover:text-blue-400 transition-colors px-3 py-2 rounded-md text-sm font-medium">关于我们</a>
+                        <a href="#" class="hover:text-blue-400 transition-colors px-3 py-2 rounded-md text-sm font-medium flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Zeliora AI
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <a href="#contact" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full text-sm font-medium transition-all shadow-lg shadow-blue-500/30">联系专家</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-bg min-h-screen flex items-center pt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+            <div class="text-center max-w-4xl mx-auto">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-card text-blue-300 text-xs font-medium mb-6">
+                    <span class="w-2 h-2 rounded-full bg-blue-400"></span> 专注于前沿云技术与人工智能
+                </div>
+                <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-8 leading-tight">
+                    引领未来的 <span class="text-gradient">云架构与 AI 智能</span>
+                </h1>
+                <p class="text-xl text-slate-400 mb-10 max-w-2xl mx-auto">
+                    Zeliora 为企业提供顶级的 GCP 与 AWS 云架构设计及解决方案。同时，我们专注于下一代 AI Agent 的开发、架构设计与智能搜索方案，赋能您的业务创新与智能化转型。
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#services" class="bg-white text-slate-900 px-8 py-4 rounded-full font-bold text-lg hover:bg-blue-50 transition-colors shadow-xl">探索解决方案</a>
+                    <a href="#contact" class="glass-card text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/10 transition-colors">开启技术咨询</a>
+                </div>
+                <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 text-slate-500 text-sm font-semibold uppercase tracking-wider">
+                    <div>GCP & AWS 专家</div>
+                    <div>AI Agent 驱动</div>
+                    <div>高可用云架构</div>
+                    <div>企业级智能搜索</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Grid -->
+    <section id="services" class="py-24 bg-slate-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">核心业务领域</h2>
+                <p class="text-slate-400">结合顶级云计算生态与最前沿的大模型技术</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Cloud Architecture -->
+                <div class="glass-card p-8 rounded-2xl hover:border-blue-500/50 transition-colors group">
+                    <div class="w-12 h-12 bg-blue-900/50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">GCP & AWS 云架构设计</h3>
+                    <p class="text-slate-400 mb-6 text-sm leading-relaxed">提供多云及混合云环境下的高可用架构设计、云原生改造、基础设施即代码(IaC)实施、性能调优与成本优化解决方案。</p>
+                    <a href="#" class="text-blue-400 text-sm font-semibold hover:text-blue-300 flex items-center gap-1">了解更多 <span>&rarr;</span></a>
+                </div>
+
+                <!-- AI Agent -->
+                <div class="glass-card p-8 rounded-2xl hover:border-purple-500/50 transition-colors group">
+                    <div class="w-12 h-12 bg-purple-900/50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">AI Agent 开发与架构</h3>
+                    <p class="text-slate-400 mb-6 text-sm leading-relaxed">量身定制基于大语言模型的智能体工作流。提供从底层 Agent 架构设计、工具链集成到业务应用落地的全栈解决方案。</p>
+                    <a href="#" class="text-purple-400 text-sm font-semibold hover:text-purple-300 flex items-center gap-1">了解更多 <span>&rarr;</span></a>
+                </div>
+
+                <!-- AI Search -->
+                <div class="glass-card p-8 rounded-2xl hover:border-emerald-500/50 transition-colors group">
+                    <div class="w-12 h-12 bg-emerald-900/50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">AI 智能搜索方案</h3>
+                    <p class="text-slate-400 mb-6 text-sm leading-relaxed">基于深度语义理解与 RAG（检索增强生成）技术，构建企业级的高效智能知识库与业务数据搜索系统，重塑数据交互体验。</p>
+                    <a href="#" class="text-emerald-400 text-sm font-semibold hover:text-emerald-300 flex items-center gap-1">了解更多 <span>&rarr;</span></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Capabilities -->
+    <section class="py-24 border-t border-slate-800 bg-slate-900/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl font-bold mb-6">连接云端基础设施与人工智能</h2>
+                    <div class="space-y-6">
+                        <div class="flex gap-4">
+                            <div class="flex-none pt-1">
+                                <div class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs">✓</div>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-white">资深云原生专家</h4>
+                                <p class="text-slate-400 text-sm mt-1">深谙 Google Cloud 与 AWS 架构最佳实践，保障系统在云端的极致稳定与无限扩展能力。</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="flex-none pt-1">
+                                <div class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xs">✓</div>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-white">前沿 AI 生产力</h4>
+                                <p class="text-slate-400 text-sm mt-1">打破传统的模型调用，将大语言模型能力通过 Agent 自动化深度整合，重塑企业工作流。</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="flex-none pt-1">
+                                <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs">✓</div>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-white">端到端定制化方案</h4>
+                                <p class="text-slate-400 text-sm mt-1">深入理解复杂的业务场景，提供从云底层基础设施搭建到上层智能体应用落地的闭环服务。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card p-1 rounded-2xl">
+                    <!-- Code snippet visualization -->
+                    <div class="bg-slate-950 rounded-xl p-6 font-mono text-sm overflow-hidden">
+                        <div class="flex gap-2 mb-4">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <div class="text-slate-300">
+                            <span class="text-purple-400">from</span> zeliora <span class="text-purple-400">import</span> CloudAgent, AWSEnv, GCPEnv<br>
+                            <br>
+                            agent = CloudAgent(<br>
+                            &nbsp;&nbsp;name=<span class="text-green-400">"enterprise-architect"</span>,<br>
+                            &nbsp;&nbsp;environments=[AWSEnv(), GCPEnv()],<br>
+                            &nbsp;&nbsp;capabilities=[<span class="text-green-400">"rag_search"</span>, <span class="text-green-400">"cloud_deploy"</span>]<br>
+                            )<br>
+                            <br>
+                            <span class="text-slate-500"># 自动编排云基础设施与 AI 服务</span><br>
+                            agent.deploy_infrastructure(<br>
+                            &nbsp;&nbsp;target=<span class="text-green-400">"gcp-asia-east1"</span>,<br>
+                            &nbsp;&nbsp;architecture_type=<span class="text-green-400">"high-availability"</span>,<br>
+                            &nbsp;&nbsp;ai_services=<span class="text-purple-400">True</span><br>
+                            )
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 py-12 border-t border-slate-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <h4 class="text-white font-bold mb-4">核心技术</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="#" class="hover:text-blue-400">Google Cloud (GCP)</a></li>
+                        <li><a href="#" class="hover:text-blue-400">Amazon Web Services (AWS)</a></li>
+                        <li><a href="#" class="hover:text-blue-400">LLM & Agent 架构</a></li>
+                        <li><a href="#" class="hover:text-blue-400">RAG 智能搜索引擎</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4">企业服务</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="#" class="hover:text-blue-400">云架构咨询与实施</a></li>
+                        <li><a href="#" class="hover:text-blue-400">多云灾备与优化</a></li>
+                        <li><a href="#" class="hover:text-blue-400">企业级 AI 助理定制</a></li>
+                        <li><a href="#" class="hover:text-blue-400">知识库构建与搜索</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4">联系我们</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="#" class="hover:text-blue-400">技术咨询</a></li>
+                        <li><a href="#" class="hover:text-blue-400">合作探讨</a></li>
+                        <li><a href="#" class="hover:text-blue-400">提交需求</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4">关于 Zeliora</h4>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="#" class="hover:text-blue-400">关于我们</a></li>
+                        <li><a href="#" class="hover:text-blue-400">加入团队</a></li>
+                        <li><a href="#" class="hover:text-blue-400">隐私政策</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-900 pt-8 text-center text-slate-500 text-sm">
+                &copy; 2026 Zeliora (智理光纪) Enterprise. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
 </body>
 </html>
