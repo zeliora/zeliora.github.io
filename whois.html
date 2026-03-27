@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WHOIS 域名查询</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background: #1a1a2e;
+            color: #0f0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 800px; margin: 0 auto; }
+        h1 { text-align: center; margin-bottom: 30px; color: #00ff88; }
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 15px;
+            font-size: 16px;
+            background: #0d0d1a;
+            border: 2px solid #333;
+            color: #0f0;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+        input:focus { outline: none; border-color: #0f0; }
+        button {
+            padding: 12px 25px;
+            font-size: 16px;
+            background: #0f0;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: inherit;
+        }
+        button:hover { background: #00cc00; }
+        button:disabled { background: #555; cursor: not-allowed; }
+        .terminal {
+            background: #0d0d1a;
+            border: 2px solid #333;
+            border-radius: 5px;
+            padding: 15px;
+            min-height: 400px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .terminal-header {
+            color: #888;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        .line { margin: 3px 0; line-height: 1.5; }
+        .success { color: #0f0; }
+        .error { color: #f55; }
+        .info { color: #5af; }
+        .warning { color: #fa0; }
+        .label { color: #888; display: inline-block; min-width: 140px; }
+        .value { color: #0f0; }
+        .loading {
+            display: inline-block;
+            animation: dots 1.5s infinite;
+        }
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+        .note {
+            margin-top: 15px;
+            padding: 10px;
+            background: #1a1a2e;
+            border-left: 3px solid #fa0;
+            color: #888;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 WHOIS 域名查询</h1>
+        <div class="input-group">
+            <input type="text" id="domain" placeholder="输入域名，如: example.com">
+            <button id="queryBtn" onclick="queryWhois()">查询</button>
+        </div>
+        <div class="terminal">
+            <div class="terminal-header">Terminal - WHOIS 查询结果</div>
+            <div id="output">
+                <div class="line info">输入域名后点击查询按钮...</div>
+            </div>
+        </div>
+        <div class="note">
+            ⚠️ 由于浏览器跨域限制，将跳转到阿里云 WHOIS 查询页面获取结果
+        </div>
+    </div>
+
+    <script>
+        function log(msg, type = '') {
+            const output = document.getElementById('output');
+            const line = document.createElement('div');
+            line.className = 'line ' + type;
+            line.innerHTML = msg;
+            output.appendChild(line);
+            output.scrollTop = output.scrollHeight;
+        }
+
+        function clearOutput() {
+            document.getElementById('output').innerHTML = '';
+        }
+
+        function getTimestamp() {
+            return new Date().toLocaleTimeString('zh-CN', { hour12: false });
+        }
+
+        function extractDomain(input) {
+            let domain = input.trim().toLowerCase();
+            domain = domain.replace(/^(https?:\/\/)?(www\.)?/, '');
+            domain = domain.split('/')[0];
+            domain = domain.split('?')[0];
+            return domain;
+        }
+
+        let isQuerying = false;
+        
+        function queryWhois() {
+            if (isQuerying) return;
+            
+            const input = document.getElementById('domain').value.trim();
+            const btn = document.getElementById('queryBtn');
+            
+            if (!input) {
+                alert('请输入域名');
+                return;
+            }
+
+            const domain = extractDomain(input);
+            
+            const domainRegex = /^[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?(\.[a-zA-Z]{2,})+$/;
+            if (!domainRegex.test(domain)) {
+                clearOutput();
+                log(`[${getTimestamp()}] 错误: 无效的域名格式`, 'error');
+                return;
+            }
+
+            isQuerying = true;
+            clearOutput();
+            log(`[${getTimestamp()}] WHOIS 查询: ${domain}`, 'info');
+            log(`[${getTimestamp()}] 正在连接阿里云 WHOIS 服务...`, 'info');
+            log('');
+            
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                log(`[${getTimestamp()}] 正在跳转到阿里云 WHOIS 查询页面...`, 'warning');
+                log('');
+                log(`<span class="label">查询域名:</span> <span class="value">${domain}</span>`);
+                log(`<span class="label">查询接口:</span> <span class="value">whois.aliyun.com</span>`);
+                log('');
+                
+                const whoisUrl = `https://whois.aliyun.com/whois/domain/${domain}`;
+                
+                setTimeout(() => {
+                    window.open(whoisUrl, '_blank');
+                    log(`[${getTimestamp()}] ✓ 已在新标签页打开查询结果`, 'success');
+                    btn.disabled = false;
+                    isQuerying = false;
+                }, 500);
+            }, 800);
+        }
+
+        document.getElementById('domain').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                queryWhois();
+            }
+        });
+    </script>
+</body>
+</html>
