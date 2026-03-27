@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>域名连通性检测</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background: #1a1a2e;
+            color: #0f0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 800px; margin: 0 auto; }
+        h1 { text-align: center; margin-bottom: 30px; color: #00ff88; }
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 15px;
+            font-size: 16px;
+            background: #0d0d1a;
+            border: 2px solid #333;
+            color: #0f0;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+        input:focus { outline: none; border-color: #0f0; }
+        button {
+            padding: 12px 25px;
+            font-size: 16px;
+            background: #0f0;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: inherit;
+        }
+        button:hover { background: #00cc00; }
+        button:disabled { background: #555; cursor: not-allowed; }
+        .terminal {
+            background: #0d0d1a;
+            border: 2px solid #333;
+            border-radius: 5px;
+            padding: 15px;
+            min-height: 400px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .terminal-header {
+            color: #888;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        .line { margin: 3px 0; line-height: 1.5; }
+        .success { color: #0f0; }
+        .error { color: #f55; }
+        .info { color: #5af; }
+        .warning { color: #fa0; }
+        .ping-time { color: #ff0; }
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: #0f0;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+        .stats { margin-top: 15px; padding-top: 15px; border-top: 1px solid #333; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌐 域名连通性检测</h1>
+        <div class="input-group">
+            <input type="text" id="domain" placeholder="输入域名，如: aiplatform.googleapis.com">
+            <button id="pingBtn" onclick="startPing()">开始检测</button>
+        </div>
+        <div class="terminal">
+            <div class="terminal-header">Terminal - 连通性检测</div>
+            <div id="output"></div>
+        </div>
+    </div>
+
+    <script>
+        let isPinging = false;
+        let pingCount = 0;
+        let successCount = 0;
+        let failCount = 0;
+        let times = [];
+        let controller = null;
+
+        function log(msg, type = '') {
+            const output = document.getElementById('output');
+            const line = document.createElement('div');
+            line.className = 'line ' + type;
+            line.textContent = msg;
+            output.appendChild(line);
+            output.scrollTop = output.scrollHeight;
+        }
+
+        function getTimestamp() {
+            return new Date().toLocaleTimeString('zh-CN', { hour12: false });
+        }
+
+        async function ping(domain) {
+            const start = performance.now();
+            controller = new AbortController();
+            const timeout = setTimeout(() => controller.abort(), 5000);
+            
+            try {
+                // 尝试通过 fetch 检测连通性
+                const url = `https://${domain}`;
+                await fetch(url, {
+                    method: 'HEAD',
+                    mode: 'no-cors',
+                    signal: controller.signal
+                });
+                clearTimeout(timeout);
+                const time = Math.round(performance.now() - start);
+                return { success: true, time };
+            } catch (e) {
+                clearTimeout(timeout);
+                if (e.name === 'AbortError') {
+                    return { success: false, error: '请求超时' };
+                }
+                // no-cors 模式下，即使成功也可能抛出错误，但连接已建立
+                const time = Math.round(performance.now() - start);
+                if (time < 4900) {
+                    return { success: true, time };
+                }
+                return { success: false, error: '连接失败' };
+            }
+        }
+
+        async function startPing() {
+            const domain = document.getElementById('domain').value.trim();
+            const btn = document.getElementById('pingBtn');
+            const output = document.getElementById('output');
+            
+            if (!domain) {
+                alert('请输入域名');
+                return;
+            }
+
+            if (isPinging) {
+                isPinging = false;
+                btn.textContent = '开始检测';
+                showStats();
+                return;
+            }
+
+            // 重置
+            output.innerHTML = '';
+            isPinging = true;
+            pingCount = 0;
+            successCount = 0;
+            failCount = 0;
+            times = [];
+            btn.textContent = '停止检测';
+
+            log(`PING ${domain}`, 'info');
+            log(`正在检测到 ${domain} 的连通性...`, 'info');
+            log('');
+
+            while (isPinging && pingCount < 20) {
+                pingCount++;
+                const result = await ping(domain);
+                
+                if (result.success) {
+                    successCount++;
+                    times.push(result.time);
+                    log(`[${getTimestamp()}] 来自 ${domain} 的响应: 时间=${result.time}ms`, 'success');
+                } else {
+                    failCount++;
+                    log(`[${getTimestamp()}] 请求超时或失败: ${result.error}`, 'error');
+                }
+
+                if (isPinging && pingCount < 20) {
+                    await new Promise(r => setTimeout(r, 1000));
+                }
+            }
+
+            isPinging = false;
+            btn.textContent = '开始检测';
+            showStats();
+        }
+
+        function showStats() {
+            log('');
+            log(`--- 检测统计 ---`, 'info');
+            log(`已发送 = ${pingCount}, 已接收 = ${successCount}, 丢失 = ${failCount} (${Math.round(failCount/pingCount*100)}% 丢失)`, 'warning');
+            
+            if (times.length > 0) {
+                const min = Math.min(...times);
+                const max = Math.max(...times);
+                const avg = Math.round(times.reduce((a,b) => a+b, 0) / times.length);
+                log(`往返行程: 最短 = ${min}ms, 最长 = ${max}ms, 平均 = ${avg}ms`, 'ping-time');
+            }
+            
+            log('');
+            if (successCount > 0) {
+                log(`✓ 域名 ${document.getElementById('domain').value} 可以访问`, 'success');
+            } else {
+                log(`✗ 域名 ${document.getElementById('domain').value} 无法访问`, 'error');
+            }
+        }
+    </script>
+</body>
+</html>
